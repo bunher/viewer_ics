@@ -19,19 +19,19 @@ let fileList: HTMLElement;
 // Map short room names to ICS URLs
 const roomCalendars: Record<string, { name: string; url: string }> = {
   BowheadWhale_MeetingRoom1: {
-    name: 'Meeting Room 1',
+    name: 'BowheadWhale_MeetingRoom1',
     url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=BowheadWhale_MeetingRoom1'
   },
   GreenlandShark_MeetingRoom2: {
-    name: 'Meeting Room 2',
+    name: 'GreenlandShark_MeetingRoom2',
     url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=GreenlandShark_MeetingRoom2'
   },
   ImmortalJellyfish_MeetingRoom3: {
-    name: 'Meeting Room 2',
+    name: 'ImmortalJellyfish_MeetingRoom3',
     url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=ImmortalJellyfish_MeetingRoom3'
   },
   LakeSturgeon_MeetingRoom4: {
-    name: 'Meeting Room 2',
+    name: 'LakeSturgeon_MeetingRoom4',
     url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=LakeSturgeon_MeetingRoom4'
   },
   JapaneseKoi_MeetingRoom5: {
