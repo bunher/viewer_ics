@@ -147,6 +147,16 @@ document.addEventListener('DOMContentLoaded', function () {
     navLinks: true,
     dayMaxEvents: true,
     height: 'auto'
+    eventTimeFormat: {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    },
+    slotLabelFormat: {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }
   });
 
   calendar.render();
