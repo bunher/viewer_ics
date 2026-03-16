@@ -17,28 +17,37 @@ let errorElement: HTMLElement;
 let fileList: HTMLElement;
 
 // Map short room names to ICS URLs
-const roomCalendars: Record<string, { name: string; url: string }> = {
+const roomCalendars: Record<string, { name: string; url: string; color: string; textColor?: string }> = {
   BowheadWhale_MeetingRoom1: {
-    name: 'BowheadWhale_MeetingRoom1',
-    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=BowheadWhale_MeetingRoom1'
+    name: 'Bowhead Whale (Meeting Room 1)',
+    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=BowheadWhale_MeetingRoom1',
+    color: '#A65CC1',
+    textColor: '#FFFFFF'
   },
   GreenlandShark_MeetingRoom2: {
-    name: 'GreenlandShark_MeetingRoom2',
-    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=GreenlandShark_MeetingRoom2'
+    name: 'Greenland Shark (Meeting Room 2)',
+    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=GreenlandShark_MeetingRoom2',
+    color: '#7B8F97',
+    textColor: '#000000'
   },
   ImmortalJellyfish_MeetingRoom3: {
-    name: 'ImmortalJellyfish_MeetingRoom3',
-    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=ImmortalJellyfish_MeetingRoom3'
+    name: 'Immortal Jellyfish (Meeting Room 3)',
+    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=ImmortalJellyfish_MeetingRoom3',
+    color: '#D1007A',
+    textColor: '#FFFFFF'
   },
   LakeSturgeon_MeetingRoom4: {
-    name: 'LakeSturgeon_MeetingRoom4',
-    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=LakeSturgeon_MeetingRoom4'
+    name: 'Lake Sturgeon (Meeting Room 4)',
+    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=LakeSturgeon_MeetingRoom4',
+    color: '#F0D400',
+    textColor: '#000000'
   },
   JapaneseKoi_MeetingRoom5: {
-    name: 'Meeting Room 2',
-    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=JapaneseKoi_MeetingRoom5'
-  },
-
+    name: 'Japanese Koi (Meeting Room 5)',
+    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=JapaneseKoi_MeetingRoom5',
+    color: '#17C964',
+    textColor: '#000000'
+  }
 };
 
 function addToCalendar(dataUrl: string, backgroundColor: string, textColor: string): Promise<void> {
@@ -163,10 +172,12 @@ document.addEventListener('DOMContentLoaded', function () {
   console.log('ICS URL:', roomConfig.url);
   enableSpinner();
 
-  const colors = getColors(0);
-  addFile(roomConfig.name, colors[0], colors[1]);
+  const backgroundColor = roomConfig.color;
+  const textColor = roomConfig.textColor || '#000000';
 
-  addToCalendar(roomConfig.url, colors[0], colors[1])
+  addFile(roomConfig.name, backgroundColor, textColor);
+
+  addToCalendar(roomConfig.url, backgroundColor, textColor)
     .catch(() => showLoadingError('Error loading calendar.'))
     .finally(() => disableSpinner());
 });
