@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
     themeSystem: 'bootstrap5',
     navLinks: true,
     dayMaxEvents: true,
-    height: 'auto'
+    height: 'auto',
     eventTimeFormat: {
       hour: '2-digit',
       minute: '2-digit',
