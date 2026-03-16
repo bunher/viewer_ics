@@ -3,65 +3,33 @@ import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import multiMonthPlugin from '@fullcalendar/multimonth'
+import multiMonthPlugin from '@fullcalendar/multimonth';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
-import iCalendarPlugin from '@fullcalendar/icalendar'
+import iCalendarPlugin from '@fullcalendar/icalendar';
 
 import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-icons/font/bootstrap-icons.css'; // webpack uses file-loader to handle font files
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import './index.css';
-
 
 let calendar: Calendar;
 let spinner: HTMLElement;
 let errorElement: HTMLElement;
 let fileList: HTMLElement;
 
-document.getElementById("fileInput")?.addEventListener('change', (event: Event) => {
-  const target = event.target as HTMLInputElement;
-
-  if (!target.files || target.files.length == 0) return;
-
-  calendar.removeAllEventSources();
-  clearListElements();
-
-  enableSpinner();
-  hideLoadingError();
-
-  let readers: Promise<void>[] = [];
-  for (let index = 0; index < target.files.length; index++) {
-    const file = target.files.item(index);
-    const colors = getColors(index);
-
-    //Add file to fileList
-    addFile(file!.name, colors[0], colors[1]);
-    readers.push(readFileAsDataUrl(file!)
-      .then(data => addToCalendar(data, colors[0], colors[1])));
+// Map short room names to ICS URLs
+const roomCalendars: Record<string, { name: string; url: string }> = {
+  meetingroom1: {
+    name: 'Meeting Room 1',
+    url: 'http://outlook.office365.com/owa/calendar/6697040d65084b728ea8a7ef618d5f1b@athebio.com/6469589fd8b646ca807f125ba346d6e416654376312581485711/calendar.html'
+  },
+  meetingroom2: {
+    name: 'Meeting Room 2',
+    url: 'http://outlook.office365.com/owa/calendar/69da8a534a9f42acb0e9b235e8a05a89@athebio.com/6ac211ecbe0647c19909faf4eca046b211718558176671469078/calendar.html'
   }
-
-  Promise.all(readers).catch(showLoadingError)
-    .finally(disableSpinner);
-})
-
-
-function readFileAsDataUrl(file: File): Promise<string> {
-  return new Promise(function (resolve, reject) {
-    let fr = new FileReader();
-
-    fr.onload = function () {
-      resolve(fr.result as string);
-    };
-
-    fr.onerror = function () {
-      reject(fr);
-    };
-
-    fr.readAsDataURL(file);
-  });
-}
+};
 
 function addToCalendar(dataUrl: string, backgroundColor: string, textColor: string): Promise<void> {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function (resolve) {
     const input = {
       url: dataUrl,
       format: 'ics',
@@ -69,27 +37,23 @@ function addToCalendar(dataUrl: string, backgroundColor: string, textColor: stri
       textColor: textColor,
     };
     calendar.addEventSource(input);
-
     resolve();
   });
 }
 
-
-
 function enableSpinner() {
-  if (spinner.classList.contains('show')) return;
-  spinner.classList.add('show');
+  if (!spinner.classList.contains('show')) spinner.classList.add('show');
 }
 
 function disableSpinner() {
-  if (spinner.classList.contains('show')) {
-    spinner.classList.remove('show');
-  }
+  if (spinner.classList.contains('show')) spinner.classList.remove('show');
 }
 
-function showLoadingError() {
-  if (errorElement.classList.contains('show')) return;
-  errorElement.classList.add('show');
+function showLoadingError(message?: string) {
+  if (message) {
+    errorElement.textContent = message;
+  }
+  if (!errorElement.classList.contains('show')) errorElement.classList.add('show');
 }
 
 function hideLoadingError() {
@@ -97,7 +61,10 @@ function hideLoadingError() {
 }
 
 function addFile(fileName: string, backgroundColor: string, textColor: string) {
-  fileList.insertAdjacentHTML('beforeend', `<div class="rounded" style="background-color: ${backgroundColor}; color: ${textColor};">${fileName}</div>`);
+  fileList.insertAdjacentHTML(
+    'beforeend',
+    `<div class="rounded px-2 py-1" style="background-color: ${backgroundColor}; color: ${textColor};">${fileName}</div>`
+  );
 }
 
 function clearListElements() {
@@ -106,6 +73,32 @@ function clearListElements() {
   }
 }
 
+function getColors(index: number): string[] {
+  const hue = index * 137.508;
+  const rgb = hsl2rgb(hue, 0.75, 0.75);
+
+  let textColor: string;
+  if (colourIsLight(rgb[0], rgb[1], rgb[2])) {
+    textColor = 'black';
+  } else {
+    textColor = 'white';
+  }
+
+  return [`hsl(${hue},75%,75%)`, textColor];
+}
+
+function hsl2rgb(h: number, s: number, l: number): number[] {
+  let a = s * Math.min(l, 1 - l);
+  let f = (n: number, k = (n + h / 30) % 12) =>
+    l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+  return [f(0) * 255, f(8) * 255, f(4) * 255];
+}
+
+var colourIsLight = function (r: number, g: number, b: number) {
+  var a = 1 - (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return a < 0.5;
+};
+
 document.addEventListener('DOMContentLoaded', function () {
   const calendarEl = document.getElementById('calendar')!;
   spinner = document.getElementById('spinner')!;
@@ -113,45 +106,53 @@ document.addEventListener('DOMContentLoaded', function () {
   fileList = document.getElementById('fileList')!;
 
   calendar = new Calendar(calendarEl, {
-    plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin, multiMonthPlugin, bootstrap5Plugin, iCalendarPlugin],
+    plugins: [
+      interactionPlugin,
+      dayGridPlugin,
+      timeGridPlugin,
+      listPlugin,
+      multiMonthPlugin,
+      bootstrap5Plugin,
+      iCalendarPlugin
+    ],
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+      right: 'timeGridDay,timeGridWeek,listMonth,dayGridMonth'
     },
+    initialView: 'listMonth',
     themeSystem: 'bootstrap5',
     navLinks: true,
     dayMaxEvents: true,
+    height: 'auto'
   });
 
   calendar.render();
-});
 
-function getColors(index: number): string[] {
-  const hue = index * 137.508; // use golden angle approximation // Copied from https://stackoverflow.com/a/20129594/13231742
-  const rgb = hsl2rgb(hue, 0.75, 0.75);
+  const params = new URLSearchParams(window.location.search);
+  const room = params.get('room');
 
-  let textColor: string;
+  hideLoadingError();
+  clearListElements();
 
-  if (colourIsLight(rgb[0], rgb[1], rgb[2])) {
-    textColor = "black";
-  } else {
-    textColor = "white";
+  if (!room) {
+    showLoadingError('No room specified in the URL.');
+    return;
   }
 
-  return [`hsl(${hue},75%,75%)`, textColor];
-}
+  const roomConfig = roomCalendars[room];
 
-function hsl2rgb(h: number, s: number, l: number): number[] { // Copied from https://stackoverflow.com/a/54014428/13231742
-  let a = s * Math.min(l, 1 - l);
-  let f = (n: number, k = (n + h / 30) % 12) => l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-  return [f(0) * 255, f(8) * 255, f(4) * 255];
-}
+  if (!roomConfig) {
+    showLoadingError(`Unknown room: ${room}`);
+    return;
+  }
 
-var colourIsLight = function (r: number, g: number, b: number) { // Copied from https://codepen.io/WebSeed/full/pvgqEq/
+  enableSpinner();
 
-  // Counting the perceptive luminance
-  // human eye favors green color... 
-  var a = 1 - (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  return (a < 0.5);
-}
+  const colors = getColors(0);
+  addFile(roomConfig.name, colors[0], colors[1]);
+
+  addToCalendar(roomConfig.url, colors[0], colors[1])
+    .catch(() => showLoadingError('Error loading calendar.'))
+    .finally(() => disableSpinner());
+});
