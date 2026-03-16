@@ -18,14 +18,27 @@ let fileList: HTMLElement;
 
 // Map short room names to ICS URLs
 const roomCalendars: Record<string, { name: string; url: string }> = {
-  meetingroom1: {
+  BowheadWhale_MeetingRoom1: {
     name: 'Meeting Room 1',
-    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=meetingroom1'
+    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=BowheadWhale_MeetingRoom1'
   },
-  meetingroom2: {
+  GreenlandShark_MeetingRoom2: {
     name: 'Meeting Room 2',
-    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=meetingroom2'
-  }
+    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=GreenlandShark_MeetingRoom2'
+  },
+  ImmortalJellyfish_MeetingRoom3: {
+    name: 'Meeting Room 2',
+    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=ImmortalJellyfish_MeetingRoom3'
+  },
+  LakeSturgeon_MeetingRoom4: {
+    name: 'Meeting Room 2',
+    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=LakeSturgeon_MeetingRoom4'
+  },
+  JapaneseKoi_MeetingRoom5: {
+    name: 'Meeting Room 2',
+    url: 'https://snowy-frost-a564.joachim-c37.workers.dev?room=JapaneseKoi_MeetingRoom5'
+  },
+
 };
 
 function addToCalendar(dataUrl: string, backgroundColor: string, textColor: string): Promise<void> {
