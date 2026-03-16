@@ -28,9 +28,6 @@ const roomCalendars: Record<string, { name: string; url: string }> = {
   }
 };
 
-console.log('Loading room:', roomConfig.name);
-console.log('ICS URL:', roomConfig.url);
-
 function addToCalendar(dataUrl: string, backgroundColor: string, textColor: string): Promise<void> {
   return new Promise(function (resolve) {
     const input = {
@@ -149,7 +146,8 @@ document.addEventListener('DOMContentLoaded', function () {
     showLoadingError(`Unknown room: ${room}`);
     return;
   }
-
+  console.log('Loading room:', roomConfig.name);
+  console.log('ICS URL:', roomConfig.url);
   enableSpinner();
 
   const colors = getColors(0);
