@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
       center: 'title',
       right: 'timeGridDay,timeGridWeek,listMonth,dayGridMonth'
     },
-    initialView: 'listMonth',
+    initialView: 'listWeek',
     themeSystem: 'bootstrap5',
     navLinks: true,
     dayMaxEvents: true,
