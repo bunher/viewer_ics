@@ -20,11 +20,11 @@ let fileList: HTMLElement;
 const roomCalendars: Record<string, { name: string; url: string }> = {
   meetingroom1: {
     name: 'Meeting Room 1',
-    url: 'http://outlook.office365.com/owa/calendar/6697040d65084b728ea8a7ef618d5f1b@athebio.com/6469589fd8b646ca807f125ba346d6e416654376312581485711/calendar.html'
+    url: 'http://outlook.office365.com/owa/calendar/6697040d65084b728ea8a7ef618d5f1b@athebio.com/6469589fd8b646ca807f125ba346d6e416654376312581485711/calendar.ics'
   },
   meetingroom2: {
     name: 'Meeting Room 2',
-    url: 'http://outlook.office365.com/owa/calendar/69da8a534a9f42acb0e9b235e8a05a89@athebio.com/6ac211ecbe0647c19909faf4eca046b211718558176671469078/calendar.html'
+    url: 'http://outlook.office365.com/owa/calendar/69da8a534a9f42acb0e9b235e8a05a89@athebio.com/6ac211ecbe0647c19909faf4eca046b211718558176671469078/calendar.ics'
   }
 };
 
