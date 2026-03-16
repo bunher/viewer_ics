@@ -131,9 +131,9 @@ document.addEventListener('DOMContentLoaded', function () {
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'timeGridDay,timeGridWeek,listWeek,dayGridMonth'
+      right: 'timeGridDay,timeGridWeek,listMonth,dayGridMonth'
     },
-    initialView: 'listWeek',
+    initialView: 'timeGridWeek',
     themeSystem: 'bootstrap5',
     navLinks: true,
     dayMaxEvents: true,
